@@ -1,10 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './CartItems.css';
 import { ShopContext } from '../../Context/ShopContext';
 import remove_icon from '../Assets/cart_cross_icon.png';
+import PaymentForm from '../PaymentForm/PaymentForm';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const CartItems = () => {
     const {getTotalCartAmount, all_product, cartItems, removeFromCart} = useContext(ShopContext);
+    
+    const stripePromise = loadStripe('pk_test_51Rs9RKIuZhT3hRVeW8SEeiR74akv0MeMRLh5y3FLvaNQIdzxo4KADLut3iUoNtctV22hpsMcN4jkIcxjxdLLAFP700hrUcTEYR');
+    const [showPayment, setShowPayment] = useState(false);
+    
+    if (showPayment) {
+    return (
+      <Elements stripe={stripePromise}>
+        <PaymentForm totalAmount={getTotalCartAmount()} />
+      </Elements>
+      );
+    }
+    
 
   return (
     <div className="cartitems">
@@ -52,7 +67,7 @@ const CartItems = () => {
                         <h3>${getTotalCartAmount()}</h3>
                     </div>
                 </div>
-                <button>PROCEED TO CHECKOUT</button>
+                <button onClick={()=>setShowPayment(true)}>PROCEED TO CHECKOUT</button>
             </div>
             <div className="cartitems-promocode">
                 <p>If You Have Promo Code, Enter Here</p>
@@ -65,4 +80,5 @@ const CartItems = () => {
     </div>
   )
 }
+
 export default CartItems;

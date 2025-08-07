@@ -19,6 +19,11 @@ const ProductDisplay = (props) => {
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
     }
+
+    if (!product) {
+        return <p>Loading product details...</p>;
+    }
+    
   return (
     <div className="productdisplay">
         <div className="productdisplay-left">

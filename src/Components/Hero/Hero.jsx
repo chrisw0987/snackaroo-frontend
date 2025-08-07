@@ -27,7 +27,8 @@ const Hero = () => {
             </Link>
         </div>
         <div className="hero-right">
-            <img src={hero_image} alt=""></img>
+            {/* <img src={hero_image} alt=""></img> */}
+            <img src={hero_image} alt="snack-box" style={{ minWidth: '300px' }} />
         </div>
     </div>
   )

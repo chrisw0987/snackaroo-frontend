@@ -1,43 +1,74 @@
-# 🍱 Snackaroo – Asian Snack Delivery (Frontend)
+# 🍱 Snackaroo – Asian Snack Delivery Web App (Full Stack)
 
-**Snackaroo** is a fun and responsive frontend web application that showcases a curated collection of Asian snacks — crunchy bites, sweet treats, and refreshing drinks — available exclusively for Stony Brook University campus delivery.
+**Snackaroo** is a full-stack e-commerce platform built for Asian snack lovers at **Stony Brook University**, offering a seamless shopping and checkout experience for campus delivery.
 
-> 🚧 This repository currently contains the **frontend only**. The backend will be added soon in a separate folder.
+This monorepo includes:
+- 🖼️ `frontend/` – user-facing React.js site
+- 🖥️ `backend/` – Express + MongoDB server for authentication, product handling, and Stripe payments
+- ⚙️ `admin/` – internal admin panel for managing product inventory
 
 ---
 
 ## 🖼️ Preview
 
 ![SNACKAROO Screenshot](Snackaroo-Screenshot.png)  
-_Example: Product page for Ramune, product filtering, and responsive cart view_
+_Example: Product page for Ramune, filtering, and responsive cart view_
 
-##  🌍 LIVE DEMO:
-- Try it Out: https://chrisw0987.github.io/snackaroo/
+---
+
+## 🌍 LIVE DEMO
+- 🌐 [Frontend](https://chrisw0987.github.io/snackaroo/)
+- 🧪 *Backend & Admin not deployed online yet – run locally*
+
 ---
 
 ## 🛠️ Tech Stack
 
-- **React.js** (via Vite or Create React App)
-- **React Router DOM** for routing
-- **Context API** for global cart state
-- **CSS Modules** or global CSS for styling
-- **Responsive Design** (media queries)
+### Frontend
+- React.js (Vite)
+- React Router DOM
+- Context API
+- Stripe.js
+- CSS Modules / global CSS
+
+### Backend
+- Node.js + Express
+- MongoDB (via Mongoose)
+- JWT Authentication
+- Stripe Webhooks
+- Multer for image uploads
+
+### Admin
+- React + Admin UI
+- Inventory control
+- Product creation & deletion
 
 ---
 
 ## 📦 Features
 
-- 🛍 Browse by category: Crunchy, Sweets, and Drinks
-- 🔍 Product detail view with quantity selector
-- 🧮 Add-to-cart with persistent global state
-- 💸 Dynamic pricing (old/new price)
-- 🌐 Responsive layout (mobile-friendly)
+### 👩‍🍳 Frontend
+- 🛍 Browse snacks by category: Crunchy, Sweets, Drinks
+- 🧾 Add-to-cart with quantity selector
+- 💵 Dynamic pricing (old/new price)
+- 🧑‍💼 User signup/login + secure JWT session
+- 📦 Shipping form with Stripe checkout
+
+### 🛠 Backend
+- 🗂 RESTful API for products, users, and orders
+- 🧾 Secure checkout via Stripe PaymentIntent
+- 🧹 Webhook clears cart on payment success
+- 🛡 Protected routes via JWT middleware
+
+### 🧑‍💼 Admin
+- ➕ Add new snacks with images, category, and pricing
+- ❌ Delete products
+- 📊 Dashboard overview (optional)
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Local Setup)
 
-### 1. Clone the repo
 ```bash
 git clone https://github.com/chrisw0987/snackaroo.git
-cd snackaroo/frontend
+cd snackaroo
