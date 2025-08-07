@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/snackaroo/static/css/main.23f4e7f4.css",
+    "main.js": "/snackaroo/static/js/main.c521df9a.js",
+    "static/js/453.8ab44547.chunk.js": "/snackaroo/static/js/453.8ab44547.chunk.js",
+    "static/media/hero_image.png": "/snackaroo/static/media/hero_image.2e2ba04018dac80172ed.png",
+    "static/media/product_3.png": "/snackaroo/static/media/product_3.dcf9c8ea607577805561.png",
+    "static/media/product_1.png": "/snackaroo/static/media/product_1.c0051779113b43a8a7fd.png",
+    "static/media/banner_drinks.png": "/snackaroo/static/media/banner_drinks.f00fead6bd0dfd1412af.png",
+    "static/media/product_2.png": "/snackaroo/static/media/product_2.93abbe9a3ea38f61539e.png",
+    "static/media/product_4.png": "/snackaroo/static/media/product_4.6d0da8a1413e1ba8b4ef.png",
+    "static/media/banner_sweets.png": "/snackaroo/static/media/banner_sweets.3bcbc72ec69e081ed394.png",
+    "static/media/banner_crunchy.png": "/snackaroo/static/media/banner_crunchy.b094b2fbd8641dcbd2d3.png",
+    "static/media/hand_icon.png": "/snackaroo/static/media/hand_icon.9c7487cecb600f30901b.png",
+    "static/media/exclusive_image.png": "/snackaroo/static/media/exclusive_image.73b1331df16eeaf1dafe.png",
+    "static/media/logo_big.png": "/snackaroo/static/media/logo_big.62ef053b9e3507681078.png",
+    "index.html": "/snackaroo/index.html",
+    "main.23f4e7f4.css.map": "/snackaroo/static/css/main.23f4e7f4.css.map",
+    "main.c521df9a.js.map": "/snackaroo/static/js/main.c521df9a.js.map",
+    "453.8ab44547.chunk.js.map": "/snackaroo/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.23f4e7f4.css",
+    "static/js/main.c521df9a.js"
+  ]
+}
