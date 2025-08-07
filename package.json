@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://chrisw0987.github.io/snackaroo",
+  "homepage": "https://chrisw0987.github.io/snackaroo-frontend",
   "dependencies": {
     "@stripe/react-stripe-js": "^3.9.0",
     "@stripe/stripe-js": "^7.8.0",
