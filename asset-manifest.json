@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/snackaroo-frontend/static/css/main.23f4e7f4.css",
-    "main.js": "/snackaroo-frontend/static/js/main.2f896c2a.js",
+    "main.js": "/snackaroo-frontend/static/js/main.9cb65f06.js",
     "static/js/453.8ab44547.chunk.js": "/snackaroo-frontend/static/js/453.8ab44547.chunk.js",
     "static/media/hero_image.png": "/snackaroo-frontend/static/media/hero_image.2e2ba04018dac80172ed.png",
     "static/media/product_3.png": "/snackaroo-frontend/static/media/product_3.dcf9c8ea607577805561.png",
@@ -16,11 +16,11 @@
     "static/media/logo_big.png": "/snackaroo-frontend/static/media/logo_big.62ef053b9e3507681078.png",
     "index.html": "/snackaroo-frontend/index.html",
     "main.23f4e7f4.css.map": "/snackaroo-frontend/static/css/main.23f4e7f4.css.map",
-    "main.2f896c2a.js.map": "/snackaroo-frontend/static/js/main.2f896c2a.js.map",
+    "main.9cb65f06.js.map": "/snackaroo-frontend/static/js/main.9cb65f06.js.map",
     "453.8ab44547.chunk.js.map": "/snackaroo-frontend/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.23f4e7f4.css",
-    "static/js/main.2f896c2a.js"
+    "static/js/main.9cb65f06.js"
   ]
 }
