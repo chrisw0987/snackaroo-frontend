@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar } from './Components/Navbar/Navbar';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom'; 
 import Shop from './Pages/Shop';
 import ShopCategory from './Pages/ShopCategory';
 import Product from './Pages/Product';
@@ -13,7 +13,7 @@ import drinks_banner from './Components/Assets/banner_drinks.png';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Shop />} />
@@ -23,10 +23,10 @@ function App() {
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<LoginSignup />} />
-        <Route path="*" element={<Navigate to="/" />} />  
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
 
