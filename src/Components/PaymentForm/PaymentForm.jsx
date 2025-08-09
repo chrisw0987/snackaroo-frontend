@@ -28,7 +28,7 @@ const PaymentForm = ({ totalAmount }) => {
   if (!stripe || !elements) return;
 
   try {
-    const res = await fetch('http://localhost:4000/checkout', {
+    const res = await fetch('https://snackaroo-backend.onrender.com/checkout', {
       method: 'POST',
       headers: {
         'auth-token': localStorage.getItem('auth-token'),

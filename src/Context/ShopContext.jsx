@@ -16,12 +16,12 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState(getDefaultCart());
 
     useEffect(()=>{
-        fetch('http://localhost:4000/allproducts')
+        fetch('https://snackaroo-backend.onrender.com/allproducts')
         .then((response)=>response.json())
         .then((data)=>setAll_Product(data))
 
         if(localStorage.getItem('auth-token')) {
-            fetch('http://localhost:4000/getcart', {
+            fetch('https://snackaroo-backend.onrender.com/getcart', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -36,7 +36,7 @@ const ShopContextProvider = (props) => {
     const addToCart = async (itemId, quantity) => {
         setCartItems((prev)=>({...prev,[itemId]:(prev[itemId] || 0) + quantity}));
         if(localStorage.getItem('auth-token')) {
-            await fetch('http://localhost:4000/addtocart', {
+            await fetch('https://snackaroo-backend.onrender.com/addtocart', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -45,7 +45,7 @@ const ShopContextProvider = (props) => {
                 },
                 body: JSON.stringify({"itemId": itemId, "quantity": quantity}),
             });
-            const res = await fetch('http://localhost:4000/getcart', {
+            const res = await fetch('https://snackaroo-backend.onrender.com/getcart', {
                 method: 'POST',
                 headers: {
                     'auth-token': `${localStorage.getItem('auth-token')}`,
@@ -60,7 +60,7 @@ const ShopContextProvider = (props) => {
     const removeFromCart = async (itemId) => {
         setCartItems((prev)=>({...prev,[itemId]: Math.max((prev[itemId] || 0) -1,0)}));
         if (localStorage.getItem('auth-token')) {
-            await fetch('http://localhost:4000/removecart', {
+            await fetch('https://snackaroo-backend.onrender.com/removecart', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -69,7 +69,7 @@ const ShopContextProvider = (props) => {
                 },
                 body: JSON.stringify({"itemId": itemId}),
             });
-            const res = await fetch('http://localhost:4000/getcart', {
+            const res = await fetch('https://snackaroo-backend.onrender.com/getcart', {
                 method: 'POST',
                 headers: {
                     'auth-token': `${localStorage.getItem('auth-token')}`,
@@ -95,7 +95,7 @@ const ShopContextProvider = (props) => {
 
     const checkout = async () => {
         if (localStorage.getItem('auth-token')) {
-            const res = await fetch('http://localhost:4000/checkout', {
+            const res = await fetch('https://snackaroo-backend.onrender.com/checkout', {
                 method: 'POST',
                 headers: {
                     'auth-token': `${localStorage.getItem('auth-token')}`,
