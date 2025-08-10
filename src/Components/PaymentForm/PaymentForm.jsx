@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom'; 
 import './PaymentForm.css'; 
 
 const PaymentForm = ({ totalAmount }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [input, setInput] = useState('');
 
   const [formData, setFormData] = useState({
@@ -49,7 +51,7 @@ const PaymentForm = ({ totalAmount }) => {
       alert(result.error.message);
     } else if (result.paymentIntent.status === 'succeeded') {
       alert('Payment successful!');
-      window.location.href = "/"; 
+      navigate('/'); 
     }
   } catch (error) {
     console.error("Payment error:", error);
@@ -80,7 +82,7 @@ const PaymentForm = ({ totalAmount }) => {
         <button type="submit" disabled={!stripe} className="pay-button">
           Pay ${totalAmount}
         </button>
-        <button className="back-button" onClick={() => window.location.reload()}>
+        <button className="back-button" onClick={() => navigate('/cart')}>
             Back to Cart
         </button>
       </form>

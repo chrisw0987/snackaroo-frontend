@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import './CSS/LoginSignup.css'
+import { useNavigate } from 'react-router-dom';
 
 const LoginSignup = () => {
-
+  const navigate = useNavigate();
   const [state, setState] = useState("Login");
 
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const LoginSignup = () => {
 
       if (responseData.success) {
         localStorage.setItem('auth-token',responseData.token);
-        window.location.replace('/');
+        navigate('/', {replace: true});
       }
       else {
         alert(responseData.errors);
@@ -50,7 +51,7 @@ const LoginSignup = () => {
 
       if (responseData.success) {
         localStorage.setItem('auth-token',responseData.token);
-        window.location.replace('/');
+        navigate('/', {replace: true});
       }
       else {
         alert(responseData.errors);
