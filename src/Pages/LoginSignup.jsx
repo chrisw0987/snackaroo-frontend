@@ -30,10 +30,11 @@ const LoginSignup = () => {
 
       if (responseData.success) {
         localStorage.setItem('auth-token',responseData.token);
+        window.dispatchEvent(new Event('auth-change'));
         navigate('/', {replace: true});
       }
       else {
-        alert(responseData.errors);
+        alert(responseData.errors || 'Login Failed');
       }
   }
 
@@ -51,10 +52,11 @@ const LoginSignup = () => {
 
       if (responseData.success) {
         localStorage.setItem('auth-token',responseData.token);
+        window.dispatchEvent(new Event('auth-change'));
         navigate('/', {replace: true});
       }
       else {
-        alert(responseData.errors);
+        alert(responseData.errors || 'Sign Up Failed');
       }
   }
 

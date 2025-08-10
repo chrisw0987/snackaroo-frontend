@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import './Navbar.css';
 import logo from '../Assets/logo.png';
 import cart_icon from '../Assets/cart_icon.png';
@@ -10,7 +10,18 @@ export const Navbar = () => {
   const [menu, setMenu] = useState('shop');
   const { getTotalCartItems } = useContext(ShopContext);
   const menuRef = useRef();
-  const navigate = useNavigate();               
+  const navigate = useNavigate();   
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('auth-token'));
+  
+  useEffect(()=> {
+    const refresh=()=> setLoggedIn(!!localStorage.getItem('auth-token'));
+      window.addEventListener('auth-change', refresh);
+      window.addEventListener('storage', refresh);
+      return () => {
+        window.removeEventListener('auth-change', refresh);
+        window.removeEventListener('storage', refresh);
+      };
+  }, [])
 
   const dropdown_toggle = (e) => {
     menuRef.current.classList.toggle('nav-menu-visible');
@@ -51,11 +62,14 @@ export const Navbar = () => {
       </ul>
 
       <div className="nav-login-cart">
-        {localStorage.getItem('auth-token') ? <button onClick={()=>{
-          localStorage.removeItem('auth-token');
-          navigate('/', {replace: true});
-        }}>
-          Logout</button>:<Link to="/login"><button>Login</button></Link>}
+        {loggedIn ? (
+          <button type='button' onClick={()=> {
+            localStorage.removeItem('auth-token');
+            setLoggedIn(false);
+            navigate('/', {replace: true});
+            window.dispatchEvent(new Event('auth-change'));
+            }}>
+          Logout</button>):(<Link to="/login"><button type='button'>Login</button></Link>)}
         <Link to="/cart"><img src={cart_icon} alt=""/></Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
