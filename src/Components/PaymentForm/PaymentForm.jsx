@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom'; 
 import './PaymentForm.css'; 
+import { ShopContext } from '../../Context/ShopContext';
 
 const PaymentForm = ({ totalAmount }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
   const [input, setInput] = useState('');
+  const { clearCart } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
       first_name:"",
@@ -73,13 +75,10 @@ const PaymentForm = ({ totalAmount }) => {
        </div>
 
 
-
-
-      <form></form>
       <h2>Payment Details</h2>
       <form onSubmit={handleSubmit} className="payment-form">
         <CardElement className="card-element" />
-        <button type="submit" disabled={!stripe} className="pay-button">
+        <button onClick={clearCart()} type="submit" disabled={!stripe} className="pay-button">
           Pay ${totalAmount}
         </button>
         <button className="back-button" onClick={() => navigate('/cart')}>

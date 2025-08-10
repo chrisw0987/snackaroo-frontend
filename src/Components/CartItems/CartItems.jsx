@@ -1,25 +1,30 @@
-import React, { useContext, useMemo, useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import './CartItems.css';
 import { ShopContext } from '../../Context/ShopContext';
 import remove_icon from '../Assets/cart_cross_icon.png';
 import PaymentForm from '../PaymentForm/PaymentForm';
 import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate } from 'react-router-dom';
 
-const stripePromise = loadStripe('pk_test_51Rs9RKIuZhT3hRVeW8SEeiR74akv0MeMRLh5y3FLvaNQIdzxo4KADLut3iUoNtctV22hpsMcN4jkIcxjxdLLAFP700hrUcTEYR');
+const stripePromise = loadStripe(
+  'pk_test_51Rs9RKIuZhT3hRVeW8SEeiR74akv0MeMRLh5y3FLvaNQIdzxo4KADLut3iUoNtctV22hpsMcN4jkIcxjxdLLAFP700hrUcTEYR'
+);
 
 const CartItems = () => {
-  const {
-    getTotalCartAmount,
-    all_product,
-    cartItems,
-    removeFromCart,
-  } = useContext(ShopContext);
+  const { getTotalCartAmount, all_product, cartItems, removeFromCart } =
+    useContext(ShopContext);
 
   const navigate = useNavigate();
   const [showPayment, setShowPayment] = useState(false);
   const loggedIn = !!localStorage.getItem('auth-token');
+
+  useEffect(() => {
+    if (showPayment && !loggedIn) {
+      setShowPayment(false);
+      navigate('/login', { replace: true });
+    }
+  }, [showPayment, loggedIn, navigate]);
 
   const itemsInCart = useMemo(() => {
     return all_product.filter((p) => (cartItems[p.id] || 0) > 0);
@@ -27,12 +32,7 @@ const CartItems = () => {
 
   const total = getTotalCartAmount();
 
-  if (showPayment) {
-    if (!loggedIn) {
-      setShowPayment(false);
-      navigate('/login');
-      return null;
-    }
+  if (showPayment && loggedIn) {
     return (
       <Elements stripe={stripePromise}>
         <PaymentForm totalAmount={total} />
@@ -100,7 +100,9 @@ const CartItems = () => {
           </div>
 
           {loggedIn ? (
-            <button onClick={() => setShowPayment(true)}>PROCEED TO CHECKOUT</button>
+            <button onClick={() => setShowPayment(true)}>
+              PROCEED TO CHECKOUT
+            </button>
           ) : (
             <button onClick={() => navigate('/login')}>LOGIN TO CHECKOUT</button>
           )}
