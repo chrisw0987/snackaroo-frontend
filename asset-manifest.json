@@ -1,7 +1,10 @@
 {
   "files": {
-    "main.css": "/snackaroo-frontend/static/css/main.23f4e7f4.css",
-    "main.js": "/snackaroo-frontend/static/js/main.f1cb995c.js",
+    "main.css": "/snackaroo-frontend/static/css/main.a93b9530.css",
+    "main.js": "/snackaroo-frontend/static/js/main.f7960dc5.js",
+    "static/css/763.a706951c.chunk.css": "/snackaroo-frontend/static/css/763.a706951c.chunk.css",
+    "static/js/763.0438a528.chunk.js": "/snackaroo-frontend/static/js/763.0438a528.chunk.js",
+    "static/js/393.0e596582.chunk.js": "/snackaroo-frontend/static/js/393.0e596582.chunk.js",
     "static/js/453.8ab44547.chunk.js": "/snackaroo-frontend/static/js/453.8ab44547.chunk.js",
     "static/media/hero_image.png": "/snackaroo-frontend/static/media/hero_image.2e2ba04018dac80172ed.png",
     "static/media/product_3.png": "/snackaroo-frontend/static/media/product_3.dcf9c8ea607577805561.png",
@@ -15,12 +18,15 @@
     "static/media/exclusive_image.png": "/snackaroo-frontend/static/media/exclusive_image.73b1331df16eeaf1dafe.png",
     "static/media/logo_big.png": "/snackaroo-frontend/static/media/logo_big.62ef053b9e3507681078.png",
     "index.html": "/snackaroo-frontend/index.html",
-    "main.23f4e7f4.css.map": "/snackaroo-frontend/static/css/main.23f4e7f4.css.map",
-    "main.f1cb995c.js.map": "/snackaroo-frontend/static/js/main.f1cb995c.js.map",
+    "main.a93b9530.css.map": "/snackaroo-frontend/static/css/main.a93b9530.css.map",
+    "main.f7960dc5.js.map": "/snackaroo-frontend/static/js/main.f7960dc5.js.map",
+    "763.a706951c.chunk.css.map": "/snackaroo-frontend/static/css/763.a706951c.chunk.css.map",
+    "763.0438a528.chunk.js.map": "/snackaroo-frontend/static/js/763.0438a528.chunk.js.map",
+    "393.0e596582.chunk.js.map": "/snackaroo-frontend/static/js/393.0e596582.chunk.js.map",
     "453.8ab44547.chunk.js.map": "/snackaroo-frontend/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.23f4e7f4.css",
-    "static/js/main.f1cb995c.js"
+    "static/css/main.a93b9530.css",
+    "static/js/main.f7960dc5.js"
   ]
 }
