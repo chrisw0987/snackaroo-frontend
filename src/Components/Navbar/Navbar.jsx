@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './Navbar.css';
 import logo from '../Assets/logo.png';
 import cart_icon from '../Assets/cart_icon.png';
@@ -8,35 +8,40 @@ import nav_dropdown from '../Assets/nav_dropdown.png';
 
 export const Navbar = () => {
   const [menu, setMenu] = useState('shop');
-  const { getTotalCartItems } = useContext(ShopContext);
-  const menuRef = useRef();
-  const navigate = useNavigate();   
+  const { getTotalCartItems, clearCart } = useContext(ShopContext);
+  const menuRef = useRef(null);
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('auth-token'));
-  
-  useEffect(()=> {
-    const refresh=()=> setLoggedIn(!!localStorage.getItem('auth-token'));
-      window.addEventListener('auth-change', refresh);
-      window.addEventListener('storage', refresh);
-      return () => {
-        window.removeEventListener('auth-change', refresh);
-        window.removeEventListener('storage', refresh);
-      };
-  }, [])
+
+  useEffect(() => {
+    const refresh = () => setLoggedIn(!!localStorage.getItem('auth-token'));
+    window.addEventListener('auth-change', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('auth-change', refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
 
   const dropdown_toggle = (e) => {
-    menuRef.current.classList.toggle('nav-menu-visible');
-    e.target.classList.toggle('open');
+    if (menuRef.current) {
+      menuRef.current.classList.toggle('nav-menu-visible');
+      e.target.classList.toggle('open');
+    }
   };
 
-  const handleLogout = () => {                  
+  const handleLogout = () => {
     localStorage.removeItem('auth-token');
-    navigate('/');                              
+    clearCart();                     
+    setLoggedIn(false);
+    window.dispatchEvent(new Event('auth-change'));
+    navigate('/', { replace: true });
   };
 
   return (
     <div className="navbar">
       <div className="nav-logo">
-        <img src={logo} alt=""/>
+        <img src={logo} alt="" />
         <p>SNACKAROO</p>
       </div>
 
@@ -63,14 +68,11 @@ export const Navbar = () => {
 
       <div className="nav-login-cart">
         {loggedIn ? (
-          <button type='button' onClick={()=> {
-            localStorage.removeItem('auth-token');
-            setLoggedIn(false);
-            navigate('/', {replace: true});
-            window.dispatchEvent(new Event('auth-change'));
-            }}>
-          Logout</button>):(<Link to="/login"><button type='button'>Login</button></Link>)}
-        <Link to="/cart"><img src={cart_icon} alt=""/></Link>
+          <button type="button" onClick={handleLogout}>Logout</button>
+        ) : (
+          <Link to="/login"><button type="button">Login</button></Link>
+        )}
+        <Link to="/cart"><img src={cart_icon} alt="" /></Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
     </div>

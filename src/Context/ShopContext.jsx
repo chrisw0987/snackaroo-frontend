@@ -1,133 +1,173 @@
-import React, { createContext, useEffect } from "react";
-import { useState } from 'react';
+import React, { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext(null);
 
-const getDefaultCart = () => {
-        let cart = {};
-        for (let index=0; index < 300+1; index++) {
-            cart[index] = 0;
-        }
-        return cart;
-    }
+const BASE = 'https://snackaroo-backend.onrender.com';
+const GUEST_CART_KEY = 'guest-cart';
+
+const emptyCart = () => {
+  const c = {};
+  for (let i = 0; i <= 300; i++) c[i] = 0;
+  return c;
+};
+
+const readGuestCart = () => {
+  try {
+    const raw = localStorage.getItem(GUEST_CART_KEY);
+    if (!raw) return emptyCart();
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : emptyCart();
+  } catch {
+    return emptyCart();
+  }
+};
+
+const writeGuestCart = (cart) => {
+  try {
+    localStorage.setItem(GUEST_CART_KEY, JSON.stringify(cart));
+  } catch {}
+};
 
 const ShopContextProvider = (props) => {
-    const [all_product, setAll_Product] = useState([]);
-    const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [all_product, setAll_Product] = useState([]);
+  const [cartItems, setCartItems] = useState(emptyCart());
 
-    useEffect(()=>{
-        fetch('https://snackaroo-backend.onrender.com/allproducts')
-        .then((response)=>response.json())
-        .then((data)=>setAll_Product(data))
+  const isAuthed = () => !!localStorage.getItem('auth-token');
 
-        if(localStorage.getItem('auth-token')) {
-            fetch('https://snackaroo-backend.onrender.com/getcart', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'auth-token':`${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body:"",
-            }).then((response)=>response.json()).then((data)=>setCartItems(data));
-        }
-    },[])
+  useEffect(() => {
+    const load = async () => {
+      const prods = await fetch(`${BASE}/allproducts`).then((r) => r.json());
+      setAll_Product(prods);
 
-    const addToCart = async (itemId, quantity) => {
-        setCartItems((prev)=>({...prev,[itemId]:(prev[itemId] || 0) + quantity}));
-        if(localStorage.getItem('auth-token')) {
-            await fetch('https://snackaroo-backend.onrender.com/addtocart', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'auth-token': `${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({"itemId": itemId, "quantity": quantity}),
-            });
-            const res = await fetch('https://snackaroo-backend.onrender.com/getcart', {
-                method: 'POST',
-                headers: {
-                    'auth-token': `${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json'
-                },
-                body:""
-            });
-            const updatedCart = await res.json();
-            setCartItems(updatedCart);
-        }
-    }
-    const removeFromCart = async (itemId) => {
-        setCartItems((prev)=>({...prev,[itemId]: Math.max((prev[itemId] || 0) -1,0)}));
-        if (localStorage.getItem('auth-token')) {
-            await fetch('https://snackaroo-backend.onrender.com/removecart', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'auth-token': `${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({"itemId": itemId}),
-            });
-            const res = await fetch('https://snackaroo-backend.onrender.com/getcart', {
-                method: 'POST',
-                headers: {
-                    'auth-token': `${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: ""
-            });
-            const updatedCart = await res.json();
-            setCartItems(updatedCart);  
-        }
-    }
-
-    const getTotalCartAmount = () => {
-        let totalAmount = 0;
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                let itemInfo = all_product.find((product) => product.id === Number(item));
-                totalAmount += itemInfo.new_price * cartItems[item];
-            }
-        }
-        return totalAmount;
-    }
-
-    const checkout = async () => {
-        if (localStorage.getItem('auth-token')) {
-            const res = await fetch('https://snackaroo-backend.onrender.com/checkout', {
-                method: 'POST',
-                headers: {
-                    'auth-token': `${localStorage.getItem('auth-token')}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await res.json();
-            if (data.success) {
-                setCartItems(getDefaultCart());
-                alert("Order placed successfully!");
-            } else {
-                alert("Checkout failed: " + data.errors);
-            }
-        }
+      if (isAuthed()) {
+        const data = await fetch(`${BASE}/getcart`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'auth-token': localStorage.getItem('auth-token') || '',
+            'Content-Type': 'application/json',
+          },
+          body: '',
+        }).then((r) => r.json());
+        setCartItems(data || emptyCart());
+      } else {
+        setCartItems(readGuestCart());
+      }
     };
+    load();
+  }, []);
 
-    const getTotalCartItems = () => {
-        let totalItem = 0;
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                totalItem += cartItems[item];
-            }
-        }
-        return totalItem;
+  const syncServer = async () => {
+    const res = await fetch(`${BASE}/getcart`, {
+      method: 'POST',
+      headers: {
+        'auth-token': localStorage.getItem('auth-token') || '',
+        'Content-Type': 'application/json',
+      },
+      body: '',
+    });
+    const updated = await res.json();
+    setCartItems(updated || emptyCart());
+  };
+
+  const addToCart = async (itemId, quantity = 1) => {
+    setCartItems((prev) => {
+      const next = { ...prev, [itemId]: (prev[itemId] || 0) + quantity };
+      if (!isAuthed()) writeGuestCart(next);
+      return next;
+    });
+
+    if (isAuthed()) {
+      await fetch(`${BASE}/addtocart`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'auth-token': localStorage.getItem('auth-token') || '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ itemId, quantity }),
+      });
+      await syncServer();
     }
-        
+  };
 
-    const contextValue = {getTotalCartItems, getTotalCartAmount,all_product,cartItems, addToCart, removeFromCart, checkout};
-    return (
-        <ShopContext.Provider value={contextValue}>
-            {props.children}
-        </ShopContext.Provider>
-    )
-}
+  const removeFromCart = async (itemId) => {
+    setCartItems((prev) => {
+      const nextQty = Math.max((prev[itemId] || 0) - 1, 0);
+      const next = { ...prev, [itemId]: nextQty };
+      if (!isAuthed()) writeGuestCart(next);
+      return next;
+    });
+
+    if (isAuthed()) {
+      await fetch(`${BASE}/removecart`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'auth-token': localStorage.getItem('auth-token') || '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ itemId }),
+      });
+      await syncServer();
+    }
+  };
+
+  const getTotalCartAmount = () => {
+    let total = 0;
+    for (const item in cartItems) {
+      const qty = cartItems[item];
+      if (!qty || qty <= 0) continue;
+      const info = all_product.find((p) => p && Number(p.id) === Number(item));
+      if (!info || typeof info.new_price !== 'number') continue;
+      total += info.new_price * qty;
+    }
+    return total;
+  };
+
+  const getTotalCartItems = () => {
+    let total = 0;
+    for (const item in cartItems) {
+      const qty = cartItems[item];
+      if (qty && qty > 0) total += qty;
+    }
+    return total;
+  };
+
+  const checkout = async () => {
+    if (!isAuthed()) return;
+    const res = await fetch(`${BASE}/checkout`, {
+      method: 'POST',
+      headers: {
+        'auth-token': localStorage.getItem('auth-token') || '',
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await res.json();
+    if (data && data.success) {
+      setCartItems(emptyCart());
+      writeGuestCart(emptyCart());
+      alert('Order placed successfully!');
+    } else {
+      alert('Checkout failed');
+    }
+  };
+
+  const contextValue = {
+    all_product,
+    cartItems,
+    addToCart,
+    removeFromCart,
+    getTotalCartItems,
+    getTotalCartAmount,
+    checkout,
+  };
+
+  return (
+    <ShopContext.Provider value={contextValue}>
+      {props.children}
+    </ShopContext.Provider>
+  );
+};
+
 export default ShopContextProvider;
