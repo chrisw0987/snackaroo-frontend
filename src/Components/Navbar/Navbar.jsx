@@ -31,8 +31,8 @@ export const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('auth-token');
-    clearCart();                     
+    clearCart();
+    localStorage.removeItem('auth-token');                     
     setLoggedIn(false);
     window.dispatchEvent(new Event('auth-change'));
     navigate('/', { replace: true });

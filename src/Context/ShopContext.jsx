@@ -113,6 +113,12 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  const clearCart = () => {
+    const empty = emptyCart();
+    setCartItems(empty);
+    writeGuestCart(empty);
+  };
+
   const getTotalCartAmount = () => {
     let total = 0;
     for (const item in cartItems) {
@@ -145,8 +151,9 @@ const ShopContextProvider = (props) => {
     });
     const data = await res.json();
     if (data && data.success) {
-      setCartItems(emptyCart());
-      writeGuestCart(emptyCart());
+      const empty = emptyCart();
+      setCartItems(empty);
+      writeGuestCart(empty);
       alert('Order placed successfully!');
     } else {
       alert('Checkout failed');
@@ -161,6 +168,7 @@ const ShopContextProvider = (props) => {
     getTotalCartItems,
     getTotalCartAmount,
     checkout,
+    clearCart,            
   };
 
   return (
